@@ -1,0 +1,6 @@
+.DS_Store
+Thumbs.db
+
+# Chave da Geoapify (pesquisa de locais): fica só na máquina de quem usa.
+# O modelo versionado é js/config.local.example.js.
+js/config.local.js

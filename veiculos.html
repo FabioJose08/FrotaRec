@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frota | Frota Recife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body data-pagina="frota" data-titulo="Frota">
+
+<div class="app">
+  <aside class="nav-lateral" id="nav-lateral" aria-label="Navegação principal"></aside>
+  <div class="fundo-nav" id="fundo-nav"></div>
+
+  <div class="app-corpo">
+    <header class="barra-topo" id="barra-topo"></header>
+
+    <main class="conteudo">
+      <div class="conteudo-interno">
+
+        <div class="cabecalho-pagina">
+          <div>
+            <h2>Veículos cadastrados</h2>
+            <p>Somente veículos “Ativo” recebem viagens; em manutenção ou inativos ficam bloqueados no planejamento. O consumo médio (km/L) é usado nas estimativas de combustível.</p>
+          </div>
+          <button id="btn-exportar-veiculos" class="botao botao-secundario" type="button">Exportar CSV</button>
+        </div>
+
+        <div id="kpis-frota" class="grade-kpi"></div>
+
+        <section id="bloco-formulario" class="bloco" aria-labelledby="titulo-formulario">
+          <h2 id="titulo-formulario">Novo veículo</h2>
+
+          <form id="form-veiculo" class="formulario" novalidate>
+            <input type="hidden" id="campo-id">
+
+            <div class="campo">
+              <label for="codigo">Placa ou código *</label>
+              <input id="codigo" name="codigo" type="text" maxlength="20" required>
+            </div>
+
+            <div class="campo">
+              <label for="tipo">Tipo *</label>
+              <input id="tipo" name="tipo" type="text" maxlength="40" placeholder="Ex.: Van de carga" required>
+            </div>
+
+            <div class="campo">
+              <label for="responsavel">Responsável</label>
+              <input id="responsavel" name="responsavel" type="text" maxlength="60">
+            </div>
+
+            <div class="campo">
+              <label for="transportadora">Transportadora</label>
+              <input id="transportadora" name="transportadora" type="text" maxlength="60">
+            </div>
+
+            <div class="campo">
+              <label for="consumo">Consumo médio (km/L)</label>
+              <input id="consumo" name="consumo" type="text" inputmode="decimal" placeholder="Ex.: 8,5" autocomplete="off" aria-describedby="ajuda-consumo">
+              <span id="ajuda-consumo" class="ajuda">Necessário para estimar combustível e economia. Deixe em branco se não souber.</span>
+            </div>
+
+            <div class="campo">
+              <label for="situacao">Situação operacional *</label>
+              <select id="situacao" name="situacao"></select>
+            </div>
+
+            <div class="formulario-rodape">
+              <p id="mensagem-form" class="mensagem" role="status" hidden></p>
+              <div class="controles">
+                <button id="btn-salvar" class="botao" type="submit">Salvar veículo</button>
+                <button id="btn-cancelar" class="botao botao-secundario" type="button" hidden>Cancelar edição</button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section class="bloco" aria-labelledby="titulo-lista">
+          <h2 id="titulo-lista">Lista da frota</h2>
+          <p id="mensagem-lista" class="mensagem" role="status" hidden></p>
+          <p id="vazio-veiculos" class="estado-vazio" hidden>Nenhum veículo cadastrado. Use o formulário acima para cadastrar o primeiro.</p>
+
+          <div id="tabela-rolagem" class="tabela-rolagem" hidden>
+            <table class="tabela">
+              <caption class="so-leitor">Lista de veículos cadastrados</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Código</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Responsável</th>
+                  <th scope="col">Transportadora</th>
+                  <th scope="col">Consumo</th>
+                  <th scope="col">Situação</th>
+                  <th scope="col">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-veiculos"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <script type="module" src="js/shell.js"></script>
+  <script type="module" src="js/veiculos.js"></script>
+</body>
+</html>

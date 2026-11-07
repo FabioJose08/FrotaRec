@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configurações | Frota Recife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body data-pagina="configuracoes" data-titulo="Configurações">
+
+<div class="app">
+  <aside class="nav-lateral" id="nav-lateral" aria-label="Navegação principal"></aside>
+  <div class="fundo-nav" id="fundo-nav"></div>
+
+  <div class="app-corpo">
+    <header class="barra-topo" id="barra-topo"></header>
+
+    <main class="conteudo">
+      <div class="conteudo-interno">
+
+        <div class="cabecalho-pagina">
+          <div>
+            <h2>Configurações gerais</h2>
+            <p>Parâmetros usados nos cálculos e cópia de segurança dos dados deste navegador.</p>
+          </div>
+        </div>
+
+        <section class="bloco" aria-labelledby="titulo-combustivel">
+          <h2 id="titulo-combustivel">Combustível</h2>
+          <form id="form-config" class="formulario" novalidate>
+            <div class="campo">
+              <label for="preco-combustivel">Preço do combustível por litro (R$/L)</label>
+              <input id="preco-combustivel" type="text" inputmode="decimal" placeholder="Ex.: 6,29" autocomplete="off" aria-describedby="ajuda-preco">
+              <span id="ajuda-preco" class="ajuda">Atualize manualmente quando o preço mudar. Sem preço, o sistema calcula litros, mas não custo em reais.</span>
+            </div>
+            <div class="formulario-rodape">
+              <p id="mensagem-config" class="mensagem" role="status" hidden></p>
+              <div class="controles">
+                <button id="btn-salvar-config" class="botao" type="submit">Salvar preço</button>
+              </div>
+            </div>
+          </form>
+          <p class="ajuda">Fórmulas: litros = distância ÷ consumo médio; custo = litros × preço do litro. As viagens já concluídas mantêm o preço da época em que foram registradas.</p>
+        </section>
+
+        <section class="bloco" aria-labelledby="titulo-backup">
+          <h2 id="titulo-backup">Backup dos dados</h2>
+          <p class="nota">O backup em JSON inclui veículos, ocorrências, galpão, planejamentos, histórico de viagens e configurações. Importar substitui os dados atuais deste navegador, após confirmação.</p>
+          <p id="mensagem-backup" class="mensagem" role="status" hidden></p>
+          <div class="controles">
+            <button id="btn-exportar-backup" class="botao" type="button">Exportar backup (JSON)</button>
+            <label class="botao botao-secundario" for="arquivo-backup" id="rotulo-arquivo" tabindex="0" role="button">Importar backup…</label>
+            <input id="arquivo-backup" type="file" accept="application/json,.json" class="so-leitor">
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <script type="module" src="js/shell.js"></script>
+  <script type="module" src="js/configuracoes-pagina.js"></script>
+</body>
+</html>

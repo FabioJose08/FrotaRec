@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ocorrências | Frota Recife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body data-pagina="ocorrencias" data-titulo="Ocorrências">
+
+<div class="app">
+  <aside class="nav-lateral" id="nav-lateral" aria-label="Navegação principal"></aside>
+  <div class="fundo-nav" id="fundo-nav"></div>
+
+  <div class="app-corpo">
+    <header class="barra-topo" id="barra-topo"></header>
+
+    <main class="conteudo">
+      <div class="conteudo-interno">
+
+        <div class="cabecalho-pagina">
+          <div>
+            <h2>Ocorrências e manutenção</h2>
+            <p>Registre quebras e acompanhe o histórico por veículo. Os registros ficam salvos neste navegador.</p>
+          </div>
+          <button id="btn-exportar-quebras" class="botao botao-secundario" type="button">Exportar CSV</button>
+        </div>
+
+        <div id="kpis-quebras" class="grade-kpi"></div>
+
+        <section class="bloco" aria-labelledby="titulo-formulario">
+          <h2 id="titulo-formulario">Nova ocorrência</h2>
+
+          <p id="sem-veiculos" class="mensagem mensagem-info" hidden>
+            Nenhum veículo cadastrado. <a href="veiculos.html">Cadastre um veículo</a> antes de registrar uma quebra.
+          </p>
+
+          <form id="form-quebra" class="formulario" novalidate>
+            <input type="hidden" id="campo-id">
+
+            <div class="campo">
+              <label for="veiculo">Veículo *</label>
+              <select id="veiculo" name="veiculo" required></select>
+            </div>
+
+            <div class="campo">
+              <label for="data">Data da ocorrência *</label>
+              <input id="data" name="data" type="date" required>
+            </div>
+
+            <p id="info-veiculo" class="info-veiculo"></p>
+
+            <div class="campo campo-largo">
+              <label for="motivo">Motivo *</label>
+              <input id="motivo" name="motivo" type="text" maxlength="120" placeholder="Ex.: Pneu furado" required>
+            </div>
+
+            <div class="campo">
+              <label for="registrado-por">Registrado por *</label>
+              <input id="registrado-por" name="registrado-por" type="text" maxlength="60" required>
+            </div>
+
+            <div class="campo campo-largo">
+              <label for="observacoes">Observações</label>
+              <textarea id="observacoes" name="observacoes" rows="3" maxlength="500"></textarea>
+            </div>
+
+            <div class="formulario-rodape">
+              <p id="mensagem-form" class="mensagem" role="status" hidden></p>
+              <div class="controles">
+                <button id="btn-salvar" class="botao" type="submit">Registrar ocorrência</button>
+                <button id="btn-cancelar" class="botao botao-secundario" type="button" hidden>Cancelar edição</button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section class="bloco" aria-labelledby="titulo-historico">
+          <h2 id="titulo-historico">Histórico</h2>
+
+          <div class="campo filtro">
+            <label for="filtro-veiculo">Filtrar por veículo</label>
+            <select id="filtro-veiculo"></select>
+          </div>
+
+          <p id="mensagem-lista" class="mensagem" role="status" hidden></p>
+          <p id="vazio-quebras" class="estado-vazio" hidden></p>
+
+          <div id="tabela-rolagem" class="tabela-rolagem" hidden>
+            <table class="tabela">
+              <caption class="so-leitor">Histórico de quebras</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Data</th>
+                  <th scope="col">Veículo</th>
+                  <th scope="col">Motivo</th>
+                  <th scope="col">Registrado por</th>
+                  <th scope="col">Observações</th>
+                  <th scope="col">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-quebras"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <script type="module" src="js/shell.js"></script>
+  <script type="module" src="js/quebras.js"></script>
+</body>
+</html>

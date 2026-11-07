@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planejamento de rotas | Frota Recife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body data-pagina="planejamento" data-titulo="Planejamento de rotas">
+
+<div class="app">
+  <aside class="nav-lateral" id="nav-lateral" aria-label="Navegação principal"></aside>
+  <div class="fundo-nav" id="fundo-nav"></div>
+
+  <div class="app-corpo">
+    <header class="barra-topo" id="barra-topo"></header>
+
+    <main class="principal">
+
+      <aside class="painel" aria-label="Planejamento da viagem">
+
+        <ol class="etapas" id="etapas" aria-label="Progresso do planejamento">
+          <li id="etapa-1"><a href="#sec-veiculo">1 · Veículo</a></li>
+          <li id="etapa-2"><a href="#sec-pontos">2 · Pontos</a></li>
+          <li id="etapa-3"><a href="#sec-modo">3 · Modo</a></li>
+          <li id="etapa-4"><a href="#sec-resultado">4 · Resultado</a></li>
+        </ol>
+
+        <section id="sec-veiculo" aria-labelledby="titulo-veiculos">
+          <h2 id="titulo-veiculos"><span class="num-etapa" aria-hidden="true">1</span> Veículo</h2>
+          <ul id="lista-veiculos" class="lista-veiculos">
+            <li class="estado-vazio">Carregando veículos…</li>
+          </ul>
+          <p id="aviso-sem-veiculos" class="mensagem mensagem-info" hidden>
+            Nenhum veículo ativo disponível para novas viagens.
+            <a href="veiculos.html">Abrir o cadastro de veículos</a>.
+          </p>
+
+          <p id="sem-selecao" class="estado-vazio">Escolha um veículo na lista.</p>
+          <dl id="dados-veiculo" class="dados-veiculo" hidden>
+            <dt>Código</dt><dd id="dado-codigo"></dd>
+            <dt>Tipo</dt><dd id="dado-tipo"></dd>
+            <dt>Situação</dt><dd id="dado-situacao"></dd>
+            <dt>Consumo médio</dt><dd id="dado-consumo"></dd>
+            <dt>Movimento</dt><dd id="dado-movimento"></dd>
+          </dl>
+          <p><button id="btn-centralizar" class="botao botao-secundario botao-pequeno" type="button" disabled>Centralizar no percurso</button></p>
+        </section>
+
+        <section id="sec-pontos" aria-labelledby="titulo-rota">
+          <h2 id="titulo-rota"><span class="num-etapa" aria-hidden="true">2</span> Pontos da viagem</h2>
+          <p class="ajuda">O veículo sai do galpão, coleta o produto e faz as entregas. Pesquise o local pelo nome ou endereço, clique no mapa para marcá-lo ou digite as coordenadas.</p>
+          <p class="ajuda ajuda-busca">Pesquisa de locais por <a href="https://www.geoapify.com/" target="_blank" rel="noopener noreferrer">Geoapify</a> · dados © colaboradores do <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>.</p>
+
+          <div class="campo">
+            <label for="input-galpao">Galpão / base dos veículos</label>
+            <input id="input-galpao" type="text" placeholder="Defina o galpão no mapa" readonly disabled>
+            <label for="busca-galpao" class="rotulo-busca">Pesquisar galpão por nome ou endereço</label>
+            <div class="busca-local"><input id="busca-galpao" type="text" maxlength="120" placeholder="Ex.: Shopping Recife" disabled></div>
+            <button id="btn-mapa-galpao" class="botao botao-secundario botao-pequeno" type="button" disabled>Definir galpão no mapa</button>
+          </div>
+
+          <div class="campo">
+            <label for="input-coleta">Local de coleta do produto</label>
+            <input id="input-coleta" type="text" placeholder="Nenhum ponto de coleta marcado" readonly disabled>
+            <label for="busca-coleta" class="rotulo-busca">Pesquisar coleta por nome ou endereço</label>
+            <div class="busca-local"><input id="busca-coleta" type="text" maxlength="120" placeholder="Ex.: Avenida Boa Viagem" disabled></div>
+            <button id="btn-mapa-coleta" class="botao botao-secundario botao-pequeno" type="button" disabled>Marcar coleta no mapa</button>
+          </div>
+
+          <div class="bloco-entregas">
+            <div class="cabecalho-entregas">
+              <h3 id="titulo-entregas">Entregas <span id="contador-entregas" class="contador">0</span></h3>
+            </div>
+            <ul id="lista-entregas" class="lista-entregas" aria-labelledby="titulo-entregas"></ul>
+            <p id="vazio-entregas" class="estado-vazio">Nenhuma entrega adicionada.</p>
+
+            <div class="campo">
+              <label for="busca-entrega" class="rotulo-busca">Pesquisar entrega por nome ou endereço</label>
+              <div class="busca-local"><input id="busca-entrega" type="text" maxlength="120" placeholder="Ex.: Aeroporto Internacional do Recife" disabled></div>
+            </div>
+
+            <div class="controles">
+              <button id="btn-mapa-entrega" class="botao botao-secundario botao-pequeno" type="button" aria-pressed="false" disabled>Adicionar entrega no mapa</button>
+              <button id="btn-nova-entrega" class="botao botao-secundario botao-pequeno" type="button" disabled>Adicionar por coordenadas</button>
+            </div>
+
+            <form id="form-entrega" class="form-entrega" hidden novalidate>
+              <h4 id="titulo-editor">Nova entrega</h4>
+              <div class="campo">
+                <label for="busca-editor" class="rotulo-busca">Preencher por pesquisa (nome e coordenadas)</label>
+                <div class="busca-local"><input id="busca-editor" type="text" maxlength="120" placeholder="Nome do local ou endereço"></div>
+              </div>
+              <div class="campo">
+                <label for="entrega-nome">Nome da entrega *</label>
+                <input id="entrega-nome" type="text" maxlength="60" autocomplete="off">
+              </div>
+              <div class="campo-dupla">
+                <div class="campo">
+                  <label for="entrega-lat">Latitude *</label>
+                  <input id="entrega-lat" type="text" inputmode="decimal" placeholder="-8,0476" autocomplete="off">
+                </div>
+                <div class="campo">
+                  <label for="entrega-lng">Longitude *</label>
+                  <input id="entrega-lng" type="text" inputmode="decimal" placeholder="-34,8770" autocomplete="off">
+                </div>
+              </div>
+              <div class="campo">
+                <label for="entrega-minutos">Tempo de atendimento (min)</label>
+                <input id="entrega-minutos" type="text" inputmode="numeric" value="5" autocomplete="off">
+              </div>
+              <p id="erro-editor" class="mensagem mensagem-erro" role="alert" hidden></p>
+              <div class="controles">
+                <button id="btn-salvar-entrega" class="botao botao-pequeno" type="submit">Salvar entrega</button>
+                <button id="btn-editor-mapa" class="botao botao-secundario botao-pequeno" type="button">Escolher no mapa</button>
+                <button id="btn-cancelar-entrega" class="botao botao-secundario botao-pequeno" type="button">Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section id="sec-modo" aria-labelledby="titulo-modo">
+          <h2 id="titulo-modo"><span class="num-etapa" aria-hidden="true">3</span> Modo de cálculo</h2>
+          <fieldset class="opcoes-rota">
+            <legend class="so-leitor">Opções da rota</legend>
+
+            <div class="cartao-modo" id="cartao-modo">
+              <input id="opt-otimizar" class="interruptor" type="checkbox" checked disabled aria-describedby="desc-modo">
+              <label for="opt-otimizar"><strong id="rotulo-modo">Modo Turbo</strong></label>
+              <p id="desc-modo">Reordena as entregas pelo Problema do Caixeiro Viajante para reduzir o deslocamento. Desligado, vale o modo Normal: a ordem em que você cadastrou.</p>
+            </div>
+
+            <fieldset class="grupo-criterio" id="grupo-criterio">
+              <legend>Prioridade do Turbo</legend>
+              <label class="opcao"><input type="radio" name="criterio" id="criterio-tempo" value="tempo" checked disabled> Menor tempo de deslocamento (padrão)</label>
+              <label class="opcao"><input type="radio" name="criterio" id="criterio-distancia" value="distancia" disabled> Menor distância e consumo estimado</label>
+            </fieldset>
+
+            <label class="opcao"><input id="opt-retorno" type="checkbox" disabled> Retornar ao galpão ao final</label>
+          </fieldset>
+
+          <div class="controles">
+            <button id="btn-calcular" class="botao botao-turbo" type="button" disabled>Otimizar rota</button>
+            <button id="btn-limpar-rota" class="botao botao-secundario" type="button" disabled>Resetar viagem</button>
+          </div>
+          <p id="mensagem-rota" class="mensagem" role="status" hidden></p>
+          <button id="btn-tentar" class="botao botao-secundario" type="button" hidden>Tentar novamente</button>
+        </section>
+
+        <section id="sec-resultado" aria-labelledby="titulo-resultado">
+          <h2 id="titulo-resultado"><span class="num-etapa" aria-hidden="true">4</span> Resultado e simulação</h2>
+
+          <div id="resumo-rota" class="resumo-rota" hidden>
+            <p id="resumo-numeros"></p>
+            <p id="resumo-otimizacao"></p>
+            <small id="resumo-nota">Valores estimados; sem trânsito em tempo real.</small>
+          </div>
+
+          <div id="comparacao" class="comparacao" hidden></div>
+          <div id="bloco-combustivel" class="bloco-combustivel" hidden></div>
+
+          <h3 id="titulo-simulacao" style="margin-top:18px">Simulação</h3>
+          <div class="controles">
+            <button id="btn-iniciar" class="botao" type="button" disabled>Iniciar</button>
+            <button id="btn-pausar" class="botao botao-secundario" type="button" disabled>Pausar</button>
+            <button id="btn-reiniciar" class="botao botao-secundario" type="button" disabled>Reiniciar</button>
+          </div>
+          <div class="progresso" role="progressbar" aria-label="Progresso da viagem" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barra-progresso"><span id="barra-progresso-preench"></span></div>
+          <div class="info-simulacao"><span id="info-parada">—</span><span id="info-progresso">0%</span></div>
+          <p id="nota-simulacao" class="ajuda"></p>
+
+          <h3 id="titulo-percurso" style="margin-top:14px">Percurso</h3>
+          <ol id="lista-percurso" class="lista-percurso">
+            <li class="estado-vazio">Escolha um veículo.</li>
+          </ol>
+        </section>
+      </aside>
+
+      <div class="area-mapa">
+        <div id="mapa"></div>
+        <div id="alternar-rota" class="sobre-mapa alternador-rota" role="group" aria-label="Rota exibida no mapa" hidden>
+          <button id="ver-normal" type="button" aria-pressed="false" style="--c: var(--cor-normal)">Normal</button>
+          <button id="ver-turbo" type="button" aria-pressed="false" style="--c: var(--cor-turbo)">Turbo</button>
+        </div>
+        <div id="legenda-mapa" class="sobre-mapa legenda-mapa" role="region" aria-label="Legenda do mapa">
+          <h2>Legenda</h2>
+          <ul>
+            <li><span class="leg-ponto" style="--c:#0A1A33"></span> Galpão</li>
+            <li><span class="leg-ponto" style="--c:#F59E0B"></span> Coleta</li>
+            <li><span class="leg-ponto" style="--c:#1D4ED8"></span> Entregas (ordem de visita)</li>
+            <li id="leg-selecionada"><span class="leg-linha" style="--c:var(--cor-turbo)"></span> <span id="leg-selecionada-texto">Rota selecionada</span></li>
+            <li id="leg-alternativa" hidden><span class="leg-linha tracejada" style="--c:var(--cor-normal)"></span> <span id="leg-alternativa-texto">Rota alternativa</span></li>
+            <li><span class="leg-linha" style="--c:var(--cor-percorrido)"></span> Trecho percorrido</li>
+          </ul>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module" src="js/shell.js"></script>
+<script type="module" src="js/principal.js"></script>
+</body>
+</html>

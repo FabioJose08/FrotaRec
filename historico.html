@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Histórico de viagens | Frota Recife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body data-pagina="historico" data-titulo="Histórico de viagens">
+
+<div class="app">
+  <aside class="nav-lateral" id="nav-lateral" aria-label="Navegação principal"></aside>
+  <div class="fundo-nav" id="fundo-nav"></div>
+
+  <div class="app-corpo">
+    <header class="barra-topo" id="barra-topo"></header>
+
+    <main class="conteudo">
+      <div class="conteudo-interno">
+
+        <div class="cabecalho-pagina">
+          <div>
+            <h2>Viagens concluídas</h2>
+            <p>Cada simulação concluída gera um único registro, guardado neste navegador. Combustível e custo são estimativas pelo consumo médio informado.</p>
+          </div>
+          <div class="controles">
+            <button id="btn-exportar-viagens" class="botao botao-secundario" type="button">Exportar CSV</button>
+            <button id="btn-imprimir" class="botao botao-secundario" type="button">Imprimir relatório</button>
+          </div>
+        </div>
+
+        <div id="kpis-historico" class="grade-kpi"></div>
+        <p id="mensagem-historico" class="mensagem" role="status" hidden></p>
+
+        <section class="bloco" aria-labelledby="titulo-lista-viagens">
+          <div class="bloco-cabecalho">
+            <h2 id="titulo-lista-viagens">Registros</h2>
+            <button id="btn-limpar-historico" class="botao botao-perigo botao-pequeno" type="button">Limpar histórico</button>
+          </div>
+          <div class="barra-filtros">
+            <div class="campo">
+              <label for="filtro-veiculo-h">Veículo</label>
+              <select id="filtro-veiculo-h"></select>
+            </div>
+            <div class="campo">
+              <label for="filtro-modo">Modo</label>
+              <select id="filtro-modo">
+                <option value="">Todos</option>
+                <option value="normal">Normal</option>
+                <option value="turbo">Turbo</option>
+              </select>
+            </div>
+          </div>
+          <p id="vazio-historico" class="estado-vazio" hidden></p>
+          <div id="tabela-historico" class="tabela-rolagem" hidden>
+            <table class="tabela">
+              <caption class="so-leitor">Histórico de viagens concluídas</caption>
+              <thead><tr>
+                <th scope="col">Data e hora</th><th scope="col">Veículo</th><th scope="col">Modo</th>
+                <th scope="col" class="numero">Entregas</th><th scope="col" class="numero">Distância</th><th scope="col" class="numero">Duração</th>
+                <th scope="col" class="numero">Combustível</th><th scope="col" class="numero">Economia</th><th scope="col">Ações</th>
+              </tr></thead>
+              <tbody id="corpo-historico"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<dialog id="dialogo-viagem" aria-labelledby="titulo-dialogo">
+  <div class="dialogo-cabecalho"><h2 id="titulo-dialogo">Detalhes da viagem</h2><button id="fechar-dialogo" class="botao botao-secundario botao-pequeno" type="button" aria-label="Fechar">Fechar</button></div>
+  <div class="dialogo-corpo" id="corpo-dialogo"></div>
+</dialog>
+<div id="relatorio-impressao" aria-hidden="true"></div>
+  <script type="module" src="js/shell.js"></script>
+  <script type="module" src="js/historico-pagina.js"></script>
+</body>
+</html>

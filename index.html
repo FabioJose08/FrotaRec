@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visão geral | Frota Recife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body data-pagina="visao-geral" data-titulo="Visão geral">
+
+<div class="app">
+  <aside class="nav-lateral" id="nav-lateral" aria-label="Navegação principal"></aside>
+  <div class="fundo-nav" id="fundo-nav"></div>
+
+  <div class="app-corpo">
+    <header class="barra-topo" id="barra-topo"></header>
+
+    <main class="conteudo">
+      <div class="conteudo-interno">
+
+        <div class="cabecalho-pagina">
+          <div>
+            <h2>Situação da operação</h2>
+            <p>Indicadores calculados com os registros reais deste navegador: veículos cadastrados e viagens concluídas na simulação.</p>
+          </div>
+          <a class="botao" href="planejamento.html">Planejar nova rota</a>
+        </div>
+
+        <p id="mensagem-painel" class="mensagem" role="status" hidden></p>
+
+        <section aria-labelledby="titulo-kpi-frota">
+          <h2 class="so-leitor" id="titulo-kpi-frota">Indicadores da frota</h2>
+          <div id="kpis-frota" class="grade-kpi"></div>
+        </section>
+
+        <section aria-labelledby="titulo-kpi-ops">
+          <h2 class="so-leitor" id="titulo-kpi-ops">Indicadores de desempenho</h2>
+          <div id="kpis-operacao" class="grade-kpi"></div>
+        </section>
+
+        <div class="grade-dupla">
+          <section class="bloco" aria-labelledby="titulo-situacao">
+            <h2 id="titulo-situacao">Situação da frota</h2>
+            <div id="barra-frota" class="barra-frota" role="img" aria-label="Distribuição da frota por situação"></div>
+            <div id="legenda-frota" class="legenda-frota"></div>
+            <h3 style="margin-top:20px">Atenção</h3>
+            <ul id="lista-alertas" class="lista-alertas"></ul>
+          </section>
+
+          <section class="bloco" aria-labelledby="titulo-ultimas">
+            <div class="bloco-cabecalho">
+              <h2 id="titulo-ultimas">Últimas viagens</h2>
+              <a href="historico.html" class="botao botao-secundario botao-pequeno">Ver histórico</a>
+            </div>
+            <p id="vazio-viagens" class="estado-vazio" hidden>Nenhuma viagem concluída ainda. Planeje uma rota e conclua a simulação para ver os indicadores aqui.</p>
+            <div id="tabela-viagens" class="tabela-rolagem" hidden>
+              <table class="tabela">
+                <caption class="so-leitor">Últimas viagens concluídas</caption>
+                <thead><tr><th scope="col">Veículo</th><th scope="col">Data</th><th scope="col" class="numero">Entregas</th><th scope="col" class="numero">Distância</th><th scope="col" class="numero">Duração</th><th scope="col" class="numero">Combustível</th><th scope="col" class="numero">Economia</th></tr></thead>
+                <tbody id="corpo-viagens"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <script type="module" src="js/shell.js"></script>
+  <script type="module" src="js/visao-geral.js"></script>
+</body>
+</html>
