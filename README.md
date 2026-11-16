@@ -43,6 +43,8 @@ Os tempos e as distâncias pelas ruas são obtidos pelo OSRM. O sistema também 
 
 Para habilitar a pesquisa por nome ou endereço, configure uma chave da Geoapify: copie `js/config.local.example.js` para `js/config.local.js` e informe sua chave. O arquivo local não deve ser enviado ao Git. Como a aplicação não possui backend, restrinja as origens autorizadas da chave no painel da Geoapify.
 
+No site publicado na Netlify, a chave vem da variável de ambiente `GEOAPIFY_API_KEY`: a edge function `netlify/edge-functions/config-geoapify.js` gera `js/config.local.js` com ela.
+
 ## Armazenamento
 
 O FrotaRec não possui backend: os dados ficam no `localStorage` do navegador e não são sincronizados automaticamente entre dispositivos ou navegadores. Utilize a opção de backup nas configurações para exportar e restaurar os dados.
